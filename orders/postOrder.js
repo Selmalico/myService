@@ -1,3 +1,4 @@
+
 const AWS = require("aws-sdk");
 const mongoose = require("mongoose");
 const Order = require("../models/orderModel");
@@ -5,6 +6,7 @@ const User = require('../models/userModel')
 const { connectDB } = require("../config/databaseConfig");
 
 module.exports.postOrder = async (event, context) => {
+  console.log(event);
   context.callbackWaitsForEmptyEventLoop = false;
   const { bookId, quantity } = JSON.parse(event.body);
 
