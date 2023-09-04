@@ -1,0 +1,246 @@
+service: bookservice
+frameworkVersion: "3"
+
+provider:
+  name: aws
+  stage: dev
+  runtime: nodejs16.x  
+  region: eu-west-1
+
+functions:
+  loginUser:
+    handler: users/userLogin.userLogin
+    events:
+      - http:
+          path: user/login
+          method: post
+          cors: true
+  signupUser:
+    handler: users/userSignup.postUser
+    events:
+      - http:
+          path: user/signup
+          method: post
+          cors: true
+  getBooks:
+    handler: books/getAllBook.getAllBooks
+    events:
+      - http:
+          path: books
+          method: get
+          cors: true
+  getBookById: 
+    handler: books/getBookById.getById
+    events:
+      - http:
+          path: books/{id}
+          method: get
+          cors: true
+  postBook: 
+    handler: books/postBook.postBook
+    events:
+      - http:
+          path: books
+          method: post
+          cors: true
+  updateBook: 
+    handler: books/updateBook.updateBook
+    events:
+      - http:
+          path: books/{id}
+          method: put
+          cors: true
+  deleteBook: 
+    handler: books/deleteBook.deleteBook
+    events:
+      - http:
+          path: books/{id}
+          method: delete
+          cors: true
+  uploadImage: 
+    handler: uploadImages.uploadImages
+    events:
+      - http:
+          path: images
+          method: post
+          cors: true
+  getAllAuthors: 
+    handler: authors/getAllAuthors.getAllAuthors
+    events:
+      - http:
+          path: authors
+          method: get
+          cors: true
+  getAllGenres: 
+    handler: genres/getAllGenres.getAllGenres
+    events:
+      - http:
+          path: genres
+          method: get
+          cors: true
+  getAuthorById: 
+    handler: authors/getAuthorById.getAuthor
+    events:
+      - http:
+          path: authors/{id}
+          method: get
+          cors: true
+  postAuthor: 
+    handler: authors/postAuthor.postAuthor
+    events:
+      - http:
+          path: authors
+          method: post
+          cors: true
+  updateAuthor: 
+    handler: authors/updateAuthor.updateAuthor
+    events:
+      - http:
+          path: authors/{id}
+          method: put
+          cors: true
+  getAuthorByName: 
+    handler: authors/getAuthorByName.getByName
+    events:
+      - http:
+          path: author
+          method: get
+          cors: true
+          parameters:
+            querystrings:
+              name: true
+  deleteAuthor: 
+    handler: authors/deleteAuthor.deleteAuthor
+    events:
+      - http:
+          path: authors/{id}
+          method: delete
+          cors: true
+  getGenreById: 
+    handler: genres/getGenreById.getGenre
+    events:
+      - http:
+          path: genres/{id}
+          method: get
+          cors: true
+  postGenre: 
+    handler: genres/postGenre.postGenre
+    events:
+      - http:
+          path: genres
+          method: post
+          cors: true
+  updateGenres: 
+    handler: genres/updateGenres.updateGenre
+    events:
+      - http:
+          path: genres/{id}
+          method: put
+          cors: true
+  deleteGenre: 
+    handler: genres/deleteGenre.deleteGenre
+    events:
+      - http:
+          path: genres/{id}
+          method: delete
+          cors: true
+  bookPagination: 
+    handler: books/booksPaginationMethod.getFilterSort
+    events:
+      - http:
+          path: bookspag
+          method: get
+          cors: true
+          request:
+          parameters:
+            querystrings:
+              page: true
+              limit: true
+              search: true
+              authorId: true
+              sort: true
+  authorPagination: 
+    handler: authors/authorPaginationMethod.Authors
+    events:
+      - http:
+          path: authorspag
+          method: get
+          cors: true
+          request:
+          parameters:
+            querystrings:
+              page: true
+              limit: true
+              search: true
+  genrePagination: 
+    handler: genres/genrePaginationMethod.Genres
+    events:
+      - http:
+          path: genrespag
+          method: get
+          cors: true
+          request:
+          parameters:
+            querystrings:
+              page: true
+              limit: true
+              search: true
+  postContact: 
+    handler: contact/postContact.postContact
+    events:
+      - http:
+          path: contact
+          method: post
+          cors: true
+  confirmSubscribe: 
+    handler: contact/confirmSubscribe.confirm
+    events:
+      - http:
+          path: subscribe
+          method: post
+          cors: true
+  subscribeCompleted: 
+    handler: contact/subscribeCompleted.complete
+    events:
+      - http:
+          path: subscribe/{email}
+          method: get
+          cors: true
+  confirmSignup: 
+    handler: users/confirmSignup.confirmSignUp
+    events:
+      - http:
+          path: user/verify
+          method: post
+          cors: true
+  postOrder: 
+    handler: orders/postOrder.postOrder
+    events:
+      - http:
+          path: order
+          method: post
+          cors: true
+  getOrder: 
+    handler: orders/getOrder.getOrder
+    events:
+      - http:
+          path: order
+          method: get
+          cors: true
+# plugins: 
+#   -serverless-webpack 
+plugins:
+  - serverless-webpack
+  - serverless-plugin-optimize
+  - serverless-dotenv-plugin
+custom:
+  optimizer:
+    memorySize: 500 
+  # webpack:
+  #   webpackConfig: './webpack.config.js' 
+  #   includeModules: false
+  #   packager: 'npm'
+
+package:
+  individually: true
+  excludeDevDependencies: false
